@@ -1,6 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
+
+// Ensure Mongoose buffers commands until connection is established
+mongoose.set('bufferCommands', true);
+
 const connectDB = require('./config/database');
 require('dotenv').config();
 

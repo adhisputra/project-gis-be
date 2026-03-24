@@ -6,7 +6,8 @@ const markerSchema = new mongoose.Schema({
     description: {type: String, default: ''},
     image_url: {type: String, default: ''},
 }, {
-  timestamps: true
+  timestamps: true,
+  bufferCommands: true // Explicitly enable command buffering
 });
 
 module.exports = mongoose.model('Marker', markerSchema);

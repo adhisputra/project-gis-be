@@ -1,15 +1,16 @@
 const mongoose = require('mongoose')
 
+// Set mongoose options to handle buffering timeout
+// Setting bufferCommands to true (default) allows Mongoose to queue queries
+// until the initial connection is complete.
+mongoose.set('bufferCommands', true);
+
 const connectDB = async () => {
   try {
-    // Set mongoose options to handle buffering timeout
-    // Setting bufferCommands to true (default) allows Mongoose to queue queries
-    // until the initial connection is complete.
-    mongoose.set('bufferCommands', true);
-    
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/company-profile', {
       serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000
+      socketTimeoutMS: 45000,
+      bufferCommands: true // Ensure buffering is enabled during connection
     })
 
     console.log(`MongoDB Connected: ${conn.connection.host}`)
