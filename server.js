@@ -110,8 +110,24 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Connect to MongoDB
-connectDB();
+// Start Server
+const startServer = async () => {
+  try {
+    // Connect to MongoDB
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    }).on('error', (err) => {
+      console.error('Server error:', err);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
@@ -119,10 +135,4 @@ process.on('uncaughtException', (err) => {
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-}).on('error', (err) => {
-  console.error('Server error:', err);
 });

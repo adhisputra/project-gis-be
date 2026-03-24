@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 const connectDB = async () => {
   try {
     // Set mongoose options to handle buffering timeout
-    mongoose.set('bufferCommands', false);
+    // Setting bufferCommands to true (default) allows Mongoose to queue queries
+    // until the initial connection is complete.
+    mongoose.set('bufferCommands', true);
     
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/company-profile', {
       serverSelectionTimeoutMS: 5000,
@@ -30,8 +32,8 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error('Error connecting to MongoDB:', error.message)
-    console.log('Server will continue running without database connection')
-    // Don't exit the process, allow server to run without DB
+    // Re-throw error to be handled by caller (e.g. server.js)
+    throw error;
   }
 }
 
